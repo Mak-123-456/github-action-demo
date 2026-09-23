@@ -9,7 +9,7 @@ env:
   AWS_REGION: ap-south-1
   ECR_REPOSITORY: my-web-app 
   ECS_SERVICE: my-web-app-service
-  ECS_CLUSTER: mak-fargate-cluster             
+  ECS_CLUSTER: mak-Fargate-cluster             
   ECS_TASK_DEFINITION: task-definition.json
   CONTAINER_NAME: my-app-container
 
