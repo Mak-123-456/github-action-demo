@@ -1,5 +1,5 @@
 {
-  "family": "mak-fargate-task",
+  "family": "my-web-app",
   "networkMode": "awsvpc",
   "requiresCompatibilities": [
     "FARGATE"
