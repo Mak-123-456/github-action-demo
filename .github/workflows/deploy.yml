@@ -7,8 +7,8 @@ on:
 
 env:
   AWS_REGION: ap-south-1                  # Apni AWS region yahan daalein (e.g., ap-south-1 for Mumbai)
-  ECR_REPOSITORY: github-action-demo      # ECR repository ka naam
-  ECS_SERVICE: my-ecs-service              # ECS service ka naam
+  ECR_REPOSITORY: my-web-app 
+  ECS_SERVICE: my-web-app-service
   ECS_CLUSTER: my-ecs-cluster              # ECS cluster ka naam
   ECS_TASK_DEFINITION: task-definition.json # Apni ECS task definition file path
   CONTAINER_NAME: my-app-container        # Container ka naam jo task definition me hai
