@@ -26,8 +26,8 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: task-definition.json
-          container-name: my-web-app
-          image: my-image:latest
+          container-name: my-app-container
+          image: 606363620337.dkr.ecr.ap-south-1.amazonaws.com/my-web-app:${{ github.sha }}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2
@@ -36,4 +36,3 @@ jobs:
           service: my-web-app-service
           cluster: mak-Fargate-cluster
           wait-for-service-stability: true
-          
