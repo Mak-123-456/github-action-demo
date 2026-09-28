@@ -1,38 +1,39 @@
-# github-action-demo
-# 🚀 GitHub Action Demo
+name: Deploy to Amazon ECS
 
-This repository demonstrates how to set up and run automated workflows using **GitHub Actions**. It serves as a starter template and guide for CI/CD pipeline automation.
+on:
+  push:
+    branches:
+      - main
 
----
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
 
-## 📌 Features
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-- 🔄 **Automated Testing & CI/CD**: Runs tests automatically on every `push` or `pull_request`.
-- ⚡ **Fast & Reliable**: Leverages GitHub-hosted runners for seamless workflow execution.
-- ⚙️ **Custom Workflows**: Easily extensible for building, testing, and deploying applications.
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
 
----
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: task-definition.json
+          container-name: my-web-app
+          image: my-image:latest
 
-## 🛠️ Workflows Included
-
-The workflows are located in `.github/workflows/`:
-
-| Workflow File | Description | Trigger |
-|--------------|-------------|---------|
-| `main.yml`   | Primary CI pipeline (lint, test, build) | `push`, `pull_request` |
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-
-- A GitHub account.
-- Basic knowledge of Git and YAML syntax.
-
-### How to Use
-
-1. **Clone the repository:**
-   ```bash
-   git clone [https://github.com/](https://github.com/)<your-username>/github-action-demo.git
-   cd github-action-demo
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: my-web-app-service
+          cluster: mak-Fargate-cluster
+          wait-for-service-stability: true
+          
